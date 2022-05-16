@@ -1,13 +1,17 @@
-import 'package:desafio_capyba/screens/auth.dart';
+import 'package:desafio_capyba/pages/login_page.dart';
+import 'package:desafio_capyba/pages/panel_page.dart';
+import 'package:desafio_capyba/pages/signup_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
-// await Firebase.initializeApp(
-//     options: DefaultFirebaseOptions.currentPlatform,
-// );
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
 
-void main() {
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(const MyApp());
 }
 
@@ -20,7 +24,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(useMaterial3: true, primarySwatch: Colors.green),
       title: 'Desafio Capyba',
-      home: const Scaffold(body: AuthPage()),
+      initialRoute: '/signin',
+      routes: {
+        '/signin': (context) => const LoginPage(),
+        '/panel': (context) => const PanelPage(),
+        '/signup': (context) => const SignUpPage()
+      },
     );
   }
 }
