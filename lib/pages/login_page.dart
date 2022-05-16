@@ -1,3 +1,5 @@
+import 'package:desafio_capyba/widgets/email_widget.dart';
+import 'package:desafio_capyba/widgets/password.widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -69,85 +71,6 @@ class AuthFormState extends State<AuthForm> {
             child: const Text('ou cadastre-se', style: TextStyle(fontSize: 16)),
           )
         ],
-      ),
-    );
-  }
-}
-
-class EmailField extends StatelessWidget {
-  const EmailField({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: TextFormField(
-        keyboardType: TextInputType.emailAddress,
-        decoration: InputDecoration(
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15),
-          ),
-          labelText: 'Email',
-        ),
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'Digite seu email';
-          }
-          return null;
-        },
-      ),
-    );
-  }
-}
-
-class PasswordField extends StatefulWidget {
-  const PasswordField({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  State<StatefulWidget> createState() => PasswordFieldState();
-}
-
-class PasswordFieldState extends State<PasswordField> {
-  bool _isHidden = true;
-
-  void _togglePasswordView() {
-    setState(() {
-      _isHidden = !_isHidden;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: TextFormField(
-        autocorrect: false,
-        enableSuggestions: false,
-        keyboardType: TextInputType.visiblePassword,
-        obscureText: _isHidden,
-        decoration: InputDecoration(
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15),
-          ),
-          labelText: 'Senha',
-          suffix: InkWell(
-            borderRadius: BorderRadius.circular(100),
-            onTap: _togglePasswordView,
-            child: _isHidden
-                ? const Icon(Icons.visibility)
-                : const Icon(Icons.visibility_off),
-          ),
-        ),
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'Digite sua senha';
-          }
-          return null;
-        },
       ),
     );
   }

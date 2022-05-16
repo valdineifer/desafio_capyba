@@ -24,9 +24,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(useMaterial3: true, primarySwatch: Colors.green),
       title: 'Desafio Capyba',
-      initialRoute: '/signin',
+      initialRoute: '/login',
       routes: {
-        '/signin': (context) => const LoginPage(),
+        '/login': (context) => const LoginPage(),
         '/panel': (context) => const PanelPage(),
         '/signup': (context) => const SignUpPage()
       },
