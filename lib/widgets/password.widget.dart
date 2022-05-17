@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 class PasswordField extends StatefulWidget {
+  final TextEditingController? controller;
+
   const PasswordField({
+    this.controller,
     Key? key,
   }) : super(key: key);
 
@@ -40,6 +43,7 @@ class PasswordFieldState extends State<PasswordField> {
                 : const Icon(Icons.visibility_off),
           ),
         ),
+        controller: widget.controller,
         validator: (value) {
           if (value == null || value.isEmpty) {
             return 'Digite sua senha';

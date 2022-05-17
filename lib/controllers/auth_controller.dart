@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 class AuthController {
   final firebaseAuth = FirebaseAuth.instance;
 
-  void loginWithEmailAndPassword(
+  Future<void> loginWithEmailAndPassword(
       {required String email,
       required String password,
       required void Function(String) onError,
@@ -16,12 +16,12 @@ class AuthController {
       toggleLoading(false);
 
       onSuccess();
-    } catch (e) {
-      onError("Não foi possível fazer login");
+    } on FirebaseAuthException catch (e) {
+      onError("Não foi possível fazer login. Verifique os dados informados.");
     }
   }
 
-  void signUpWithEmailAndPassword(
+  Future<void> signUpWithEmailAndPassword(
       {required String email,
       required String password,
       required void Function(String) onError,

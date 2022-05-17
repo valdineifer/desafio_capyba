@@ -2,7 +2,10 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 
 class EmailField extends StatelessWidget {
+  final TextEditingController? controller;
+
   const EmailField({
+    this.controller,
     Key? key,
   }) : super(key: key);
 
@@ -18,12 +21,13 @@ class EmailField extends StatelessWidget {
           ),
           labelText: 'Email',
         ),
+        controller: controller,
         validator: (value) {
           if (value == null || value.isEmpty) {
             return 'Digite seu email';
           }
 
-          if (EmailValidator.validate(value)) {
+          if (!EmailValidator.validate(value)) {
             return 'Digite um email válido';
           }
 
