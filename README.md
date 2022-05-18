@@ -3,14 +3,14 @@
 ## Requisitos
 
 ### Login e Cadastro
-- [ ] Cadastro e login via email
+- [x] Cadastro e login via email
 - [ ] Exigir selfie do usuário no cadastro
-- [ ] Após o login da pessoa, caso ela feche o app e abra de novo,
+- [x] Após o login da pessoa, caso ela feche o app e abra de novo,
 o app deve continuar logado e mostrar a página de home
 
 ### Área para pessoas logadas
-- [ ] Área logada contém duas abas, "Home"e"Restrito"
-- [ ] Área de Home é acessível para qualquer pessoa logada
+- [x] Área logada contém duas abas, "Home"e"Restrito"
+- [x] Área de Home é acessível para qualquer pessoa logada
 - [ ] Área Restrita só é acessível para pessoas que tenham confirmado seu email
 
 ### Meu perfil

@@ -1,13 +1,10 @@
 import 'package:desafio_capyba/controllers/auth_controller.dart';
 import 'package:desafio_capyba/widgets/email_widget.dart';
 import 'package:desafio_capyba/widgets/password.widget.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatelessWidget {
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-
-  LoginPage({Key? key}) : super(key: key);
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

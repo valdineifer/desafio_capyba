@@ -1,5 +1,5 @@
 import 'package:desafio_capyba/pages/login_page.dart';
-import 'package:desafio_capyba/pages/panel_page.dart';
+import 'package:desafio_capyba/pages/home_page.dart';
 import 'package:desafio_capyba/pages/signup_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -54,22 +54,26 @@ class MyAppState extends State<MyApp> {
           switch (snapshot.connectionState) {
             case ConnectionState.none:
             case ConnectionState.waiting:
-              return const Center(
-                child: CircularProgressIndicator(
-                  backgroundColor: Colors.lightBlueAccent,
+              return Container(
+                color: Colors.white,
+                child: const Center(
+                  child: CircularProgressIndicator(
+                    backgroundColor: Colors.lightBlueAccent,
+                  ),
                 ),
               );
             default:
               late final initialRoute = snapshot.hasData ? '/' : '/login';
 
               return MaterialApp(
+                debugShowCheckedModeBanner: false,
                 theme:
                     ThemeData(useMaterial3: true, primarySwatch: Colors.green),
                 title: 'Desafio Capyba',
                 initialRoute: initialRoute,
                 routes: {
-                  '/login': (context) => LoginPage(),
-                  '/': (context) => const PanelPage(),
+                  '/login': (context) => const LoginPage(),
+                  '/': (context) => const HomePage(),
                   '/signup': (context) => const SignUpPage()
                 },
               );
