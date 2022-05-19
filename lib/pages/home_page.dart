@@ -1,3 +1,4 @@
+import 'package:desafio_capyba/controllers/auth_controller.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -11,7 +12,7 @@ class BottomBarState extends State<HomePage> {
   int _selectedIndex = 0;
 
   final List<Widget> _navbarWidgets = <Widget>[
-    const HomeWidget(),
+    HomeWidget(),
     const AreaRestritaWidget()
   ];
 
@@ -44,11 +45,30 @@ class BottomBarState extends State<HomePage> {
 }
 
 class HomeWidget extends StatelessWidget {
-  const HomeWidget({Key? key}) : super(key: key);
+  final AuthController _authController = AuthController();
+
+  HomeWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const Center(child: Text('Conteúdo da Home Widget'));
+    return Center(
+        child: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const Text('Conteúdo da Home Widget'),
+        SizedBox(
+          width: 100,
+          height: 40,
+          child: OutlinedButton(
+              onPressed: () => _authController.logout(
+                    onSuccess: () {
+                      Navigator.of(context).pushReplacementNamed('/login');
+                    },
+                  ),
+              child: const Text("Logout")),
+        )
+      ],
+    ));
   }
 }
 

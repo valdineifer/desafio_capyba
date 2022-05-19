@@ -68,7 +68,7 @@ class LoginFormState extends State<LoginForm> {
             SnackBar(content: Text(message)),
           );
         },
-        onSuccess: () async => Navigator.pushNamed(context, '/'),
+        onSuccess: () async => Navigator.of(context).pushReplacementNamed('/'),
         toggleLoading: (bool value) {
           setState(() {
             isLoading = value;

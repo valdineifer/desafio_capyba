@@ -38,4 +38,10 @@ class AuthController {
       onError(e.message ?? 'Não foi possível criar o usuário');
     }
   }
+
+  Future<void> logout({required void Function() onSuccess}) async {
+    await FirebaseAuth.instance.signOut();
+
+    onSuccess();
+  }
 }

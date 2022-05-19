@@ -1,6 +1,7 @@
 import 'package:desafio_capyba/controllers/auth_controller.dart';
 import 'package:desafio_capyba/widgets/email_widget.dart';
 import 'package:desafio_capyba/widgets/password.widget.dart';
+import 'package:desafio_capyba/widgets/selfie_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -86,6 +87,7 @@ class SignUpFormState extends State<SignUpForm> {
       key: _formKey,
       child: Column(
         children: <Widget>[
+          const SelfieField(),
           EmailField(controller: emailController),
           PasswordField(controller: passwordController),
           Padding(
