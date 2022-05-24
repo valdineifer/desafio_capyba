@@ -4,6 +4,7 @@ import 'package:desafio_capyba/widgets/password.widget.dart';
 import 'package:desafio_capyba/widgets/selfie_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
 class SignUpPage extends StatelessWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -47,6 +48,18 @@ class SignUpFormState extends State<SignUpForm> {
   bool get isLoading => _isLoading;
   set isLoading(value) {
     _isLoading = value;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      isLoading = false;
+      if (await _authController.isLoggedIn()) {
+        Navigator.of(context).pushNamed("/");
+      }
+    });
   }
 
   @override

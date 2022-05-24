@@ -7,13 +7,10 @@ class AuthController {
       {required String email,
       required String password,
       required void Function(String) onError,
-      required void Function() onSuccess,
-      required void Function(bool) toggleLoading}) async {
+      required void Function() onSuccess}) async {
     try {
-      toggleLoading(true);
       await firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
-      toggleLoading(false);
 
       onSuccess();
     } on FirebaseAuthException catch (e) {
@@ -39,8 +36,13 @@ class AuthController {
     }
   }
 
+  Future<bool> isLoggedIn() async {
+    await firebaseAuth.currentUser?.reload();
+    return firebaseAuth.currentUser != null;
+  }
+
   Future<void> logout({required void Function() onSuccess}) async {
-    await FirebaseAuth.instance.signOut();
+    await firebaseAuth.signOut();
 
     onSuccess();
   }

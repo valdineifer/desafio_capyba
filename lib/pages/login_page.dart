@@ -3,9 +3,14 @@ import 'package:desafio_capyba/widgets/email_widget.dart';
 import 'package:desafio_capyba/widgets/password.widget.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
+  @override
+  LoginPageState createState() => LoginPageState();
+}
+
+class LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,12 +43,6 @@ class LoginFormState extends State<LoginForm> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  bool _isLoading = false;
-  bool get isLoading => _isLoading;
-  set isLoading(value) {
-    _isLoading = value;
-  }
-
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
@@ -68,12 +67,7 @@ class LoginFormState extends State<LoginForm> {
             SnackBar(content: Text(message)),
           );
         },
-        onSuccess: () async => Navigator.of(context).pushReplacementNamed('/'),
-        toggleLoading: (bool value) {
-          setState(() {
-            isLoading = value;
-          });
-        });
+        onSuccess: () async => Navigator.of(context).pushNamed('/'));
   }
 
   @override

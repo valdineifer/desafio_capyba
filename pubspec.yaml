@@ -37,6 +37,7 @@ dependencies:
   firebase_auth: ^3.3.18
   email_validator: ^2.0.1
   image_picker: ^0.8.5+3
+  provider: ^6.0.2
 
 dev_dependencies:
   flutter_test:
