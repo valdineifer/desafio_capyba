@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:desafio_capyba/controllers/auth_controller.dart';
 import 'package:desafio_capyba/widgets/email_widget.dart';
 import 'package:desafio_capyba/widgets/password.widget.dart';
@@ -39,27 +41,15 @@ class SignUpForm extends StatefulWidget {
 
 class SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final AuthController _authController = AuthController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  File? imageFile;
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
   set isLoading(value) {
     _isLoading = value;
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    SchedulerBinding.instance.addPostFrameCallback((_) async {
-      isLoading = false;
-      if (await _authController.isLoggedIn()) {
-        Navigator.of(context).pushNamed("/");
-      }
-    });
   }
 
   @override
@@ -70,6 +60,12 @@ class SignUpFormState extends State<SignUpForm> {
     super.dispose();
   }
 
+  void setImageFile(File file) {
+    setState(() {
+      imageFile = file;
+    });
+  }
+
   Future<void> onSubmit() async {
     if (!_formKey.currentState!.validate()) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -78,20 +74,24 @@ class SignUpFormState extends State<SignUpForm> {
       );
     }
 
-    await _authController.signUpWithEmailAndPassword(
-        email: emailController.text,
-        password: passwordController.text,
-        onError: (String message) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(message)),
-          );
-        },
-        onSuccess: () async => Navigator.pushNamed(context, '/'),
-        toggleLoading: (bool value) {
-          setState(() {
-            isLoading = value;
-          });
-        });
+    if (imageFile == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content:
+                Text('Selfie obrigatória! Clique no ícone para tirar uma.')),
+      );
+    } else {
+      await _authController.signUpWithEmailAndPassword(
+          email: emailController.text,
+          password: passwordController.text,
+          imageFile: imageFile!,
+          onError: (String message) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(message)),
+            );
+          },
+          onSuccess: () async => Navigator.pushNamed(context, '/'));
+    }
   }
 
   @override
@@ -100,7 +100,7 @@ class SignUpFormState extends State<SignUpForm> {
       key: _formKey,
       child: Column(
         children: <Widget>[
-          const SelfieField(),
+          SelfieField(onTakePicture: setImageFile),
           EmailField(controller: emailController),
           PasswordField(controller: passwordController),
           Padding(

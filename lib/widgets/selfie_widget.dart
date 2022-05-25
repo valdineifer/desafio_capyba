@@ -1,10 +1,13 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class SelfieField extends StatefulWidget {
-  const SelfieField({Key? key}) : super(key: key);
+  final Function(File) onTakePicture;
+
+  const SelfieField({required this.onTakePicture, Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => SelfieFieldState();
@@ -32,6 +35,8 @@ class SelfieFieldState extends State<SelfieField> {
       setState(() {
         _image = Image.memory(imageBytes, fit: BoxFit.cover);
       });
+
+      widget.onTakePicture(File(imageXFile.path));
     }
 
     _toggleLoading();

@@ -1,7 +1,11 @@
+import 'dart:io';
+
+import 'package:desafio_capyba/controllers/storage_controller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthController {
   final firebaseAuth = FirebaseAuth.instance;
+  final storageController = StorageController();
 
   Future<void> loginWithEmailAndPassword(
       {required String email,
@@ -21,14 +25,14 @@ class AuthController {
   Future<void> signUpWithEmailAndPassword(
       {required String email,
       required String password,
+      required File imageFile,
       required void Function(String) onError,
-      required void Function() onSuccess,
-      required void Function(bool) toggleLoading}) async {
+      required void Function() onSuccess}) async {
     try {
-      toggleLoading(true);
       await firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
-      toggleLoading(false);
+
+      await storageController.uploadSelfie(imageFile, email, onError: onError);
 
       onSuccess();
     } on FirebaseAuthException catch (e) {
