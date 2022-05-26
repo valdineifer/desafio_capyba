@@ -6,6 +6,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 class AuthController {
   final firebaseAuth = FirebaseAuth.instance;
   final storageController = StorageController();
+  User? get currentUser {
+    firebaseAuth.currentUser?.reload();
+    return firebaseAuth.currentUser;
+  }
 
   Future<void> loginWithEmailAndPassword(
       {required String email,

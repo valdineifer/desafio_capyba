@@ -25,32 +25,12 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppState extends State<MyApp> {
-  late User? currentUser;
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   @override
-  void initState() {
-    super.initState();
-    currentUser = _firebaseAuth.currentUser;
-  }
-
-  Future<User?> _checkCurrentUser() async {
-    if (currentUser != null) {
-      return Future.delayed(Duration.zero, () async {
-        await currentUser?.reload();
-
-        User refreshedUser = _firebaseAuth.currentUser!;
-        return refreshedUser;
-      });
-    }
-
-    return null;
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return FutureBuilder<User?>(
-        future: _checkCurrentUser(),
+    return StreamBuilder<User?>(
+        stream: _firebaseAuth.authStateChanges(),
         builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.none:
