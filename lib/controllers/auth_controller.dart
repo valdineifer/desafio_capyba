@@ -29,10 +29,17 @@ class AuthController {
       required void Function(String) onError,
       required void Function() onSuccess}) async {
     try {
-      await firebaseAuth.createUserWithEmailAndPassword(
-          email: email, password: password);
+      UserCredential userCredential = await firebaseAuth
+          .createUserWithEmailAndPassword(email: email, password: password);
 
-      await storageController.uploadSelfie(imageFile, email, onError: onError);
+      String profileImageURL =
+          await storageController.uploadSelfie(imageFile, onError: onError);
+
+      if (userCredential.user != null) {
+        userCredential.user?.updatePhotoURL(profileImageURL);
+
+        await userCredential.user?.sendEmailVerification();
+      }
 
       onSuccess();
     } on FirebaseAuthException catch (e) {

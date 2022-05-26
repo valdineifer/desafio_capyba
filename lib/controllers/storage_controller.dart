@@ -1,25 +1,25 @@
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart' as path;
+import 'package:uuid/uuid.dart';
 
 class StorageController {
-  final storage = FirebaseStorage.instance;
+  final _storage = FirebaseStorage.instance;
   late final Reference _imagesRef;
+  late final Reference _storageRef;
 
   StorageController() {
-    _imagesRef = storage.ref().child('/images');
+    _storageRef = _storage.ref();
+    _imagesRef = _storageRef.child('/images');
   }
 
-  String _getFormattedFileNameFromEmail(email, {String? filePath}) {
-    final extension = filePath != null ? path.extension(filePath) : '.jpg';
-
-    return email.replaceFirst('@', '').split('.').first + extension;
+  String _getFormattedFileName(String filePath) {
+    return Uuid().v4() + path.extension(filePath);
   }
 
-  Future<void> uploadSelfie(File file, String email,
+  Future<String> uploadSelfie(File file,
       {required Function(String) onError}) async {
-    final String finalFileName =
-        _getFormattedFileNameFromEmail(email, filePath: file.path);
+    final String finalFileName = _getFormattedFileName(file.path);
 
     final imageRef = _imagesRef.child(finalFileName);
 
@@ -28,11 +28,11 @@ class StorageController {
     } on FirebaseException catch (e) {
       onError(e.message ?? 'Erro ao fazer o carregamento da selfie');
     }
+
+    return imageRef.fullPath;
   }
 
-  Future<String> getUserSelfieURL(String email) {
-    return _imagesRef
-        .child(_getFormattedFileNameFromEmail(email))
-        .getDownloadURL();
+  Future<String> getUserSelfieURL(String url) {
+    return _storageRef.child(url).getDownloadURL();
   }
 }
