@@ -49,6 +49,10 @@ class DefaultFirebaseOptions {
     }
   }
 
+  // TODO: Proteja seu banco de dados e dados do Cloud Storage usando as regras de segurança do Firebase, não restringindo e/ou obscurecendo suas chaves de API.
+  // https://firebase.google.com/docs/projects/api-keys
+  // https://firebase.google.com/docs/rules
+
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCyM5xCRFthAqQ44_S_y5HWri8Cj3W3Gy0',
     appId: '1:68950089415:android:e02980b06c465f141ca8e2',

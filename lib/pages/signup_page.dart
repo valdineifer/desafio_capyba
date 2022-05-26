@@ -4,9 +4,7 @@ import 'package:desafio_capyba/controllers/auth_controller.dart';
 import 'package:desafio_capyba/widgets/email_widget.dart';
 import 'package:desafio_capyba/widgets/password.widget.dart';
 import 'package:desafio_capyba/widgets/selfie_widget.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 
 class SignUpPage extends StatelessWidget {
   const SignUpPage({Key? key}) : super(key: key);
