@@ -10,15 +10,13 @@ class AuthController {
   Future<void> loginWithEmailAndPassword(
       {required String email,
       required String password,
-      required void Function(String) onError,
-      required void Function() onSuccess}) async {
+      required void Function(String) onError}) async {
     try {
       await firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
-
-      onSuccess();
     } on FirebaseAuthException catch (e) {
-      onError("Não foi possível fazer login. Verifique os dados informados.");
+      onError(e.message ??
+          "Não foi possível fazer login. Verifique os dados informados.");
     }
   }
 
@@ -26,8 +24,7 @@ class AuthController {
       {required String email,
       required String password,
       required File imageFile,
-      required void Function(String) onError,
-      required void Function() onSuccess}) async {
+      required void Function(String) onError}) async {
     try {
       UserCredential userCredential = await firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: password);
@@ -40,8 +37,6 @@ class AuthController {
 
         await userCredential.user?.sendEmailVerification();
       }
-
-      onSuccess();
     } on FirebaseAuthException catch (e) {
       onError(e.message ?? 'Não foi possível criar o usuário');
     }

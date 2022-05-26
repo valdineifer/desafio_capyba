@@ -52,8 +52,11 @@ class LoginFormState extends State<LoginForm> {
   }
 
   Future<void> onSubmit() async {
+    final navigator = Navigator.of(context);
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
+
     if (!_formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(
+      scaffoldMessenger.showSnackBar(
         const SnackBar(
             content: Text('Verifique se os dados inseridos são válidos')),
       );
@@ -63,11 +66,12 @@ class LoginFormState extends State<LoginForm> {
         email: emailController.text,
         password: passwordController.text,
         onError: (String message) {
-          ScaffoldMessenger.of(context).showSnackBar(
+          scaffoldMessenger.showSnackBar(
             SnackBar(content: Text(message)),
           );
-        },
-        onSuccess: () async => Navigator.of(context).pushNamed('/'));
+        });
+
+    navigator.pushNamed('/');
   }
 
   @override

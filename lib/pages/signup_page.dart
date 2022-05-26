@@ -67,31 +67,37 @@ class SignUpFormState extends State<SignUpForm> {
   }
 
   Future<void> onSubmit() async {
+    final navigator = Navigator.of(context);
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
+
     if (!_formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(
+      scaffoldMessenger.showSnackBar(
         const SnackBar(
             content: Text('Verifique se os dados inseridos são válidos')),
       );
+      return;
     }
 
     if (imageFile == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
+      scaffoldMessenger.showSnackBar(
         const SnackBar(
             content:
                 Text('Selfie obrigatória! Clique no ícone para tirar uma.')),
       );
-    } else {
-      await _authController.signUpWithEmailAndPassword(
-          email: emailController.text,
-          password: passwordController.text,
-          imageFile: imageFile!,
-          onError: (String message) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(message)),
-            );
-          },
-          onSuccess: () async => Navigator.pushNamed(context, '/'));
+      return;
     }
+
+    await _authController.signUpWithEmailAndPassword(
+        email: emailController.text,
+        password: passwordController.text,
+        imageFile: imageFile!,
+        onError: (String message) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(message)),
+          );
+        });
+
+    navigator.pushNamed('/');
   }
 
   @override
