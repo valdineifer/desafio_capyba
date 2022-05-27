@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:desafio_capyba/services/auth_service.dart';
 import 'package:desafio_capyba/widgets/email_widget.dart';
+import 'package:desafio_capyba/widgets/loading_widget.dart';
+import 'package:desafio_capyba/widgets/name_field_widget.dart';
 import 'package:desafio_capyba/widgets/password.widget.dart';
 import 'package:desafio_capyba/widgets/selfie_widget.dart';
 import 'package:flutter/material.dart';
@@ -13,17 +15,19 @@ class SignUpPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-          child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 32),
-        child: Column(mainAxisSize: MainAxisSize.min, children: const [
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 16.0),
-            child: Text('Cadastro',
-                style: TextStyle(fontSize: 32, fontWeight: FontWeight.w300)),
-          ),
-          SignUpForm()
-        ]),
-      )),
+        child: SingleChildScrollView(
+            child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 32),
+          child: Column(mainAxisSize: MainAxisSize.min, children: const [
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 16.0),
+              child: Text('Cadastro',
+                  style: TextStyle(fontSize: 32, fontWeight: FontWeight.w300)),
+            ),
+            SignUpForm()
+          ]),
+        )),
+      ),
     );
   }
 }
@@ -40,19 +44,22 @@ class SignUpForm extends StatefulWidget {
 class SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
   final AuthService _authController = AuthService();
+  TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   File? imageFile;
 
   bool _isLoading = false;
-  bool get isLoading => _isLoading;
-  set isLoading(value) {
-    _isLoading = value;
+  set isLoading(bool loading) {
+    setState(() {
+      _isLoading = loading;
+    });
   }
 
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
+    nameController.dispose();
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
@@ -68,11 +75,14 @@ class SignUpFormState extends State<SignUpForm> {
     final navigator = Navigator.of(context);
     final scaffoldMessenger = ScaffoldMessenger.of(context);
 
+    isLoading = true;
+
     if (!_formKey.currentState!.validate()) {
       scaffoldMessenger.showSnackBar(
         const SnackBar(
             content: Text('Verifique se os dados inseridos são válidos')),
       );
+      isLoading = false;
       return;
     }
 
@@ -82,10 +92,12 @@ class SignUpFormState extends State<SignUpForm> {
             content:
                 Text('Selfie obrigatória! Clique no ícone para tirar uma.')),
       );
+      isLoading = false;
       return;
     }
 
     await _authController.signUpWithEmailAndPassword(
+        name: nameController.text,
         email: emailController.text,
         password: passwordController.text,
         imageFile: imageFile!,
@@ -93,8 +105,10 @@ class SignUpFormState extends State<SignUpForm> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(message)),
           );
+          isLoading = false;
         });
 
+    isLoading = false;
     navigator.pushNamed('/');
   }
 
@@ -103,8 +117,9 @@ class SignUpFormState extends State<SignUpForm> {
     return Form(
       key: _formKey,
       child: Column(
-        children: <Widget>[
+        children: [
           SelfieField(onTakePicture: setImageFile),
+          NameField(controller: nameController),
           EmailField(controller: emailController),
           PasswordField(controller: passwordController),
           Padding(
@@ -114,7 +129,11 @@ class SignUpFormState extends State<SignUpForm> {
               height: 50,
               child: ElevatedButton(
                 onPressed: () => onSubmit(),
-                child: const Text('Cadastre-se'),
+                child: !_isLoading
+                    ? Text('Cadastre-se')
+                    : CircularProgressIndicator(
+                        backgroundColor: Colors.lightGreenAccent,
+                      ),
               ),
             ),
           ),

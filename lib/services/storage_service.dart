@@ -18,13 +18,16 @@ class StorageService {
   }
 
   Future<String> uploadSelfie(File file,
-      {required Function(String) onError}) async {
+      {required Function(String) onError,
+      Function(UploadTask)? onUploadTask}) async {
     final String finalFileName = _getFormattedFileName(file.path);
 
     final imageRef = _imagesRef.child(finalFileName);
 
     try {
-      await imageRef.putFile(file);
+      final task = imageRef.putFile(file);
+      onUploadTask?.call(task);
+      await task;
     } on FirebaseException catch (e) {
       onError(e.message ?? 'Erro ao fazer o carregamento da selfie');
     }
@@ -35,4 +38,6 @@ class StorageService {
   Future<String> getUserSelfieURL(String url) {
     return _storageRef.child(url).getDownloadURL();
   }
+
+  Future<void> deleteSelfie(String url) => _storageRef.child(url).delete();
 }

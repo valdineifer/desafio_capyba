@@ -1,5 +1,7 @@
+import 'package:desafio_capyba/pages/login_page.dart';
 import 'package:desafio_capyba/services/auth_service.dart';
 import 'package:desafio_capyba/widgets/drawer_widget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -39,27 +41,35 @@ class BottomBarState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Desafio Capyba'),
-      ),
-      drawer: HomeDrawer(),
-      body: _navbarWidgets.elementAt(_selectedIndex),
-      bottomNavigationBar: NavigationBar(
-        destinations: const <NavigationDestination>[
-          NavigationDestination(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.admin_panel_settings),
-            label: 'Área Restrita',
-          ),
-        ],
-        selectedIndex: _selectedIndex,
-        onDestinationSelected: _onTap,
-      ),
-    );
+    return StreamBuilder<User?>(
+        stream: AuthService().userStream,
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return const LoginPage();
+          }
+
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('Desafio Capyba'),
+            ),
+            drawer: HomeDrawer(),
+            body: _navbarWidgets.elementAt(_selectedIndex),
+            bottomNavigationBar: NavigationBar(
+              destinations: const <NavigationDestination>[
+                NavigationDestination(
+                  icon: Icon(Icons.home),
+                  label: 'Home',
+                ),
+                NavigationDestination(
+                  icon: Icon(Icons.admin_panel_settings),
+                  label: 'Área Restrita',
+                ),
+              ],
+              selectedIndex: _selectedIndex,
+              onDestinationSelected: _onTap,
+            ),
+          );
+        });
   }
 }
 

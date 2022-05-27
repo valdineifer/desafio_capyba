@@ -24,7 +24,8 @@ class AuthService {
   }
 
   Future<void> signUpWithEmailAndPassword(
-      {required String email,
+      {required String name,
+      required String email,
       required String password,
       required File imageFile,
       required void Function(String) onError}) async {
@@ -36,8 +37,8 @@ class AuthService {
           await storageController.uploadSelfie(imageFile, onError: onError);
 
       if (userCredential.user != null) {
-        userCredential.user?.updatePhotoURL(profileImageURL);
-
+        await userCredential.user?.updatePhotoURL(profileImageURL);
+        await userCredential.user?.updateDisplayName(name);
         await userCredential.user?.sendEmailVerification();
       }
     } on FirebaseAuthException catch (e) {
