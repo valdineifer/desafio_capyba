@@ -1,6 +1,7 @@
 import 'package:desafio_capyba/pages/login_page.dart';
 import 'package:desafio_capyba/pages/home_page.dart';
 import 'package:desafio_capyba/pages/signup_page.dart';
+import 'package:desafio_capyba/widgets/loading_widget.dart';
 import 'package:desafio_capyba/widgets/will_pop_wrapper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -35,14 +36,7 @@ class MyAppState extends State<MyApp> {
           switch (snapshot.connectionState) {
             case ConnectionState.none:
             case ConnectionState.waiting:
-              return Container(
-                color: Colors.white,
-                child: const Center(
-                  child: CircularProgressIndicator(
-                    backgroundColor: Colors.lightBlueAccent,
-                  ),
-                ),
-              );
+              return const LoadingWidget();
             default:
               late final initialRoute = snapshot.hasData ? '/' : '/login';
 

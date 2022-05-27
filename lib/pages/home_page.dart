@@ -1,4 +1,5 @@
 import 'package:desafio_capyba/controllers/auth_controller.dart';
+import 'package:desafio_capyba/widgets/drawer_widget.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -9,22 +10,40 @@ class HomePage extends StatefulWidget {
 }
 
 class BottomBarState extends State<HomePage> {
-  int _selectedIndex = 0;
+  static const _homeIndex = 0;
+  int _selectedIndex = _homeIndex;
 
   final List<Widget> _navbarWidgets = <Widget>[
     HomeWidget(),
     const AreaRestritaWidget()
   ];
 
-  void _onTap(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+  Future<void> _onTap(int index) async {
+    final user = AuthController().user;
+
+    if (user == null) {
+      return;
+    }
+
+    if (index != _homeIndex && !user.emailVerified) {
+      await showDialog(
+        context: context,
+        builder: (context) => const EmailVerifiedDialog(),
+      );
+    } else {
+      setState(() {
+        _selectedIndex = index;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Desafio Capyba'),
+      ),
+      drawer: HomeDrawer(),
       body: _navbarWidgets.elementAt(_selectedIndex),
       bottomNavigationBar: NavigationBar(
         destinations: const <NavigationDestination>[
@@ -40,6 +59,28 @@ class BottomBarState extends State<HomePage> {
         selectedIndex: _selectedIndex,
         onDestinationSelected: _onTap,
       ),
+    );
+  }
+}
+
+class EmailVerifiedDialog extends StatelessWidget {
+  const EmailVerifiedDialog({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Área Restrita'),
+      content: const Text(
+          '''Esta é uma área apenas para usuários com e-mail verificado.
+Confirme seu e-mail de cadastro.'''),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: const Text('OK'),
+        ),
+      ],
     );
   }
 }

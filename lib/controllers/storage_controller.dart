@@ -29,7 +29,7 @@ class StorageController {
       onError(e.message ?? 'Erro ao fazer o carregamento da selfie');
     }
 
-    return imageRef.fullPath;
+    return imageRef.getDownloadURL();
   }
 
   Future<String> getUserSelfieURL(String url) {
