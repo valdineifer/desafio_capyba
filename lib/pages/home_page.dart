@@ -1,6 +1,7 @@
 import 'package:desafio_capyba/pages/login_page.dart';
 import 'package:desafio_capyba/services/auth_service.dart';
 import 'package:desafio_capyba/widgets/drawer_widget.dart';
+import 'package:desafio_capyba/widgets/loading_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -44,6 +45,10 @@ class BottomBarState extends State<HomePage> {
     return StreamBuilder<User?>(
         stream: AuthService().userStream,
         builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const LoadingWidget();
+          }
+
           if (!snapshot.hasData) {
             return const LoginPage();
           }
