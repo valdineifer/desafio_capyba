@@ -1,14 +1,14 @@
 import 'dart:io';
 
-import 'package:desafio_capyba/controllers/storage_controller.dart';
+import 'package:desafio_capyba/services/storage_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class AuthController {
+class AuthService {
   final firebaseAuth = FirebaseAuth.instance;
   final user = FirebaseAuth.instance.currentUser;
   final userStream = FirebaseAuth.instance.authStateChanges();
 
-  final storageController = StorageController();
+  final storageController = StorageService();
 
   Future<void> loginWithEmailAndPassword(
       {required String email,

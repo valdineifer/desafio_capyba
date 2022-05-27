@@ -3,12 +3,12 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart' as path;
 import 'package:uuid/uuid.dart';
 
-class StorageController {
+class StorageService {
   final _storage = FirebaseStorage.instance;
   late final Reference _imagesRef;
   late final Reference _storageRef;
 
-  StorageController() {
+  StorageService() {
     _storageRef = _storage.ref();
     _imagesRef = _storageRef.child('/images');
   }

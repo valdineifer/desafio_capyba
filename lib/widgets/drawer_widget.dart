@@ -1,8 +1,8 @@
-import 'package:desafio_capyba/controllers/auth_controller.dart';
+import 'package:desafio_capyba/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
 class HomeDrawer extends StatelessWidget {
-  final user = AuthController().user;
+  final user = AuthService().user;
 
   HomeDrawer({
     Key? key,

@@ -1,4 +1,4 @@
-import 'package:desafio_capyba/controllers/auth_controller.dart';
+import 'package:desafio_capyba/services/auth_service.dart';
 import 'package:desafio_capyba/widgets/drawer_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -19,7 +19,7 @@ class BottomBarState extends State<HomePage> {
   ];
 
   Future<void> _onTap(int index) async {
-    final user = AuthController().user;
+    final user = AuthService().user;
 
     if (user == null) {
       return;
@@ -86,7 +86,7 @@ Confirme seu e-mail de cadastro.'''),
 }
 
 class HomeWidget extends StatelessWidget {
-  final AuthController _authController = AuthController();
+  final AuthService _authController = AuthService();
 
   HomeWidget({Key? key}) : super(key: key);
 
