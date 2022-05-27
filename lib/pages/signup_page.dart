@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:desafio_capyba/services/auth_service.dart';
 import 'package:desafio_capyba/widgets/email_widget.dart';
-import 'package:desafio_capyba/widgets/loading_widget.dart';
 import 'package:desafio_capyba/widgets/name_field_widget.dart';
 import 'package:desafio_capyba/widgets/password.widget.dart';
 import 'package:desafio_capyba/widgets/selfie_widget.dart';
@@ -130,8 +129,8 @@ class SignUpFormState extends State<SignUpForm> {
               child: ElevatedButton(
                 onPressed: () => onSubmit(),
                 child: !_isLoading
-                    ? Text('Cadastre-se')
-                    : CircularProgressIndicator(
+                    ? const Text('Cadastre-se')
+                    : const CircularProgressIndicator(
                         backgroundColor: Colors.lightGreenAccent,
                       ),
               ),
