@@ -96,7 +96,7 @@ Confirme seu e-mail de cadastro.'''),
 }
 
 class HomeWidget extends StatelessWidget {
-  final AuthService _authController = AuthService();
+  final AuthService _authService = AuthService();
 
   HomeWidget({Key? key}) : super(key: key);
 
@@ -111,7 +111,7 @@ class HomeWidget extends StatelessWidget {
           width: 100,
           height: 40,
           child: OutlinedButton(
-              onPressed: () => _authController.logout(
+              onPressed: () => _authService.logout(
                     onSuccess: () {
                       Navigator.of(context).pushReplacementNamed('/login');
                     },

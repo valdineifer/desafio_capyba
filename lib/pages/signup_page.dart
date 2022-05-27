@@ -43,7 +43,7 @@ class SignUpForm extends StatefulWidget {
 
 class SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
-  final AuthService _authController = AuthService();
+  final AuthService _authService = AuthService();
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -96,7 +96,7 @@ class SignUpFormState extends State<SignUpForm> {
       return;
     }
 
-    await _authController.signUpWithEmailAndPassword(
+    await _authService.signUpWithEmailAndPassword(
         name: nameController.text,
         email: emailController.text,
         password: passwordController.text,

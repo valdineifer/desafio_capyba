@@ -8,7 +8,7 @@ class AuthService {
   final user = FirebaseAuth.instance.currentUser;
   final userStream = FirebaseAuth.instance.authStateChanges();
 
-  final storageController = StorageService();
+  final _storageService = StorageService();
 
   Future<void> loginWithEmailAndPassword(
       {required String email,
@@ -34,7 +34,7 @@ class AuthService {
           .createUserWithEmailAndPassword(email: email, password: password);
 
       String profileImageURL =
-          await storageController.uploadSelfie(imageFile, onError: onError);
+          await _storageService.uploadSelfie(imageFile, onError: onError);
 
       if (userCredential.user != null) {
         await userCredential.user?.updatePhotoURL(profileImageURL);

@@ -39,7 +39,7 @@ class LoginForm extends StatefulWidget {
 
 class LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
-  final AuthService _authController = AuthService();
+  final AuthService _authService = AuthService();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
@@ -62,7 +62,7 @@ class LoginFormState extends State<LoginForm> {
       );
     }
 
-    await _authController.loginWithEmailAndPassword(
+    await _authService.loginWithEmailAndPassword(
         email: emailController.text,
         password: passwordController.text,
         onError: (String message) {
